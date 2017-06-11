@@ -153,12 +153,12 @@
                             android:layout_width="180dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:backgroundTint="#FA898A"
+                            android:backgroundTint="@color/blue"
                             android:inputType="number"
                             android:padding="20dp"
-                            android:textColor="#FA898A"
-                            android:textColorHighlight="#FA898A"
-                            android:textColorHint="#FA898A"
+                            android:textColor="@color/blue"
+                            android:textColorHighlight="@color/blue"
+                            android:textColorHint="@color/blue"
                             android:textSize="45dp" />
 
                         <View
