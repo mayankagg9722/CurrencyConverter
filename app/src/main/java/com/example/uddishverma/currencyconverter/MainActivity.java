@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //TODO fill the list
-        mAdapter = new CurrencyAdapter(MainActivity.this,Globals.countryCode,Globals.countriesCurrencies);
+        mAdapter = new CurrencyAdapter(MainActivity.this,Globals.NEWcountryCode,Globals.NEWcountriesCurrencies);
         recyclerView.setAdapter(mAdapter);
 
         behavior.setPeekHeight(0);
@@ -144,8 +144,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(s!=null &&s.length()>1){
-//                    String value=Globals.convertCurrency(countryFrom.getText().toString(), countryTo.getText().toString(), currency_from.getText().toString());
-//                    currency_to.setText(value);
+                    String value=Globals.convertCurrency(countryFrom.getText().toString(), countryTo.getText().toString(), currency_from.getText().toString());
+                    currency_to.setText(value);
                 }
             }
 
@@ -164,8 +164,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                String value=Globals.convertCurrency(countryTo.getText().toString(), countryFrom.getText().toString(), currency_to.getText().toString());
-//                currency_from.setText(value);
+                String value=Globals.convertCurrency(countryTo.getText().toString(), countryFrom.getText().toString(), currency_to.getText().toString());
+                currency_from.setText(value);
             }
 
             @Override

@@ -1779,8 +1779,12 @@ public class Globals {
     }
 
     public static List<String> countriesCurrencies = new ArrayList<>();
-    public static List<String> countryCode = new ArrayList<>();
+//    public static List<List<String>> countryCode = new ArrayList<>();
     public static List<String> countryCost = new ArrayList<>();
+
+    public static List<String> NEWcountriesCurrencies = new ArrayList<>();
+    public static List<String> NEWcountryCode = new ArrayList<>();
+    public static List<String> NEWcountryCost = new ArrayList<>();
 
     public static void getCountryCode(Context context) {
 
@@ -1808,18 +1812,26 @@ public class Globals {
 
             JsonObject allThings = allThingsObject.get("results").getAsJsonObject();
             for (String s : countriesCurrencies) {
+                int i=0;
                 int flag = 0;
+                List<String> ids=new ArrayList<>();
                 for (Map.Entry<String, JsonElement> entry : allThings.entrySet()) {
                     if (entry.getValue().getAsJsonObject().get("currencyId").getAsString().equals(s)) {
                         String id = entry.getValue().getAsJsonObject().get("id").getAsString();
-                        countryCode.add(id);
+                        ids.add(id);
+                        NEWcountryCode.add(id);
+                        NEWcountriesCurrencies.add(s);
+                        NEWcountryCost.add(countryCost.get(i));
                         flag = 1;
-                        break;
                     }
                 }
-                if (flag == 0) {
-                    countryCode.add("");
+                if(flag==0){
+//                    countryCode.add(ids);
+                    NEWcountryCode.add("");
+                    NEWcountriesCurrencies.add("");
+                    NEWcountryCost.add("");
                 }
+                i++;
             }
 
         } catch (Exception e) {

@@ -69,16 +69,16 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if(this.copycountryCode.get(position)!=null && this.copycountriesCurrencies.get(position)!=null) {
-            if (Globals.getCountryFlag(this.copycountryCode.get(position)) != null) {
-                if (Globals.getCountryFlag(this.copycountryCode.get(position)).length() > 1) {
-                    holder.flag.setText(Globals.getCountryFlag(this.copycountryCode.get(position)));
-                    holder.currency.setText(this.copycountriesCurrencies.get(position));
-                }else {
-                    holder.flag.setVisibility(View.GONE);
-                    holder.currency.setVisibility(View.GONE);
+                if (Globals.getCountryFlag(this.copycountryCode.get(position)) != null) {
+                    if (Globals.getCountryFlag(this.copycountryCode.get(position)).length() > 1) {
+                        holder.flag.setText(Globals.getCountryFlag(this.copycountryCode.get(position)));
+                        holder.currency.setText(this.copycountriesCurrencies.get(position));
+                    }else {
+                        holder.flag.setVisibility(View.GONE);
+                        holder.currency.setVisibility(View.GONE);
+                    }
                 }
             }
-        }
 
         holder.linear.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +97,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return copycountriesCurrencies.size();
+        return copycountryCode.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
