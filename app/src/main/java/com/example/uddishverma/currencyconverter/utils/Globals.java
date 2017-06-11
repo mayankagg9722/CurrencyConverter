@@ -1,5 +1,18 @@
 package com.example.uddishverma.currencyconverter.utils;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.util.Log;
+
+import com.example.uddishverma.currencyconverter.MainActivity;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by mayankaggarwal on 11/06/17.
  */
@@ -1744,6 +1757,92 @@ public class Globals {
 
         String s= stringBuffer.toString();
         return s;
+    }
+
+
+    public static String getCountryFlag(String countryCode) {
+        try{
+            int flagOffset = 0x1F1E6;
+            int asciiOffset = 0x41;
+
+            String country = countryCode;
+            int firstChar = Character.codePointAt(country, 0) - asciiOffset + flagOffset;
+            int secondChar = Character.codePointAt(country, 1) - asciiOffset + flagOffset;
+
+            String flag = new String(Character.toChars(firstChar))
+                    + new String(Character.toChars(secondChar));
+            return flag;
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static List<String> countriesCurrencies=new ArrayList<>();
+    public static List<String> countryCode=new ArrayList<>();
+    public static List<String> countryCost=new ArrayList<>();
+
+    public static void getCountryCode(Context context){
+
+        try{
+            JsonParser parser=new JsonParser();
+            JsonObject currencyObject;
+            if((Prefs.getPrefs("currencyJson",context).equals("notfound"))){
+                currencyObject=parser.parse(Globals.initalCurrnecyJson).getAsJsonObject();
+            }else {
+                currencyObject=parser.parse(Prefs.getPrefs("currencyJson",context)).getAsJsonObject();
+            }
+
+            JsonObject allThingsObject=parser.parse(Globals.allThingsJson()).getAsJsonObject();
+
+            JsonObject quotes=currencyObject.get("currency").getAsJsonObject().get("quotes").getAsJsonObject();
+
+            for (Map.Entry<String, JsonElement> entry : quotes.entrySet()) {
+                String newkey=entry.getKey().substring(3);
+                String cost=entry.getValue().getAsString();
+                countriesCurrencies.add(newkey);
+                countryCost.add(cost);
+            }
+
+            JsonObject allThings=allThingsObject.get("results").getAsJsonObject();
+            for(String s :countriesCurrencies){
+                int flag=0;
+                for (Map.Entry<String, JsonElement> entry : allThings.entrySet()) {
+                    if(entry.getValue().getAsJsonObject().get("currencyId").getAsString().equals(s)){
+                        countryCode.add(entry.getValue().getAsJsonObject().get("id").getAsString());
+                        countryCode.add(entry.getValue().getAsJsonObject().get("id").getAsString());
+                        flag=1;
+                        break;
+                    }
+                }
+                if(flag==0){
+                    countryCode.add("");
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static String convertCurrency(String from, String to, String fromValue){
+        String fromusd = null;
+        String tousd=null;
+        Log.d("tagg",countriesCurrencies.toString());
+        Log.d("tagg",countryCost.toString());
+        for(int i=0;i<countriesCurrencies.size();i++){
+            if(countriesCurrencies.get(i).equals(from)){
+                fromusd=countryCost.get(i);
+            }else if(countriesCurrencies.get(i).equals(to)){
+                tousd=countryCost.get(i);
+            }
+        }
+        if(fromusd!=null && tousd!=null){
+            Float toCost=Float.parseFloat(fromValue)*(((float)1.0)/(Float.parseFloat(fromusd)))*(Float.parseFloat(tousd));
+            return toCost.toString();
+        }else {
+            return "0";
+        }
     }
 
 }

@@ -34,28 +34,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initialize();
-
+        currencyApi(MainActivity.this);
         initialApiSave();
-
-
-
+        Globals.getCountryCode(MainActivity.this);
+        String value=Globals.convertCurrency("USD","INR","2");
+        Log.d("tagg",value);
     }
 
     private void initialApiSave() {
         try{
             JsonParser parser=new JsonParser();
             JsonObject currencyObject;
-            if(!(Prefs.getPrefs("currencyJson",MainActivity.this).equals("notfound"))){
+            if((Prefs.getPrefs("currencyJson",MainActivity.this).equals("notfound"))){
                 currencyObject=parser.parse(Globals.initalCurrnecyJson).getAsJsonObject();
             }else {
                 currencyObject=parser.parse(Prefs.getPrefs("currencyJson",MainActivity.this)).getAsJsonObject();
             }
             JsonObject allThingsObject=parser.parse(Globals.allThingsJson()).getAsJsonObject();
-
-            Log.d("tagg",currencyObject.get("status").getAsString());
-
-            Log.d("tagg",currencyObject.get("currency").getAsJsonObject().get("quotes").getAsJsonObject().get("USDINR").getAsString());
-            Log.d("tagg",allThingsObject.get("results").getAsJsonObject().toString());
 
         }catch (Exception e){
             e.printStackTrace();
