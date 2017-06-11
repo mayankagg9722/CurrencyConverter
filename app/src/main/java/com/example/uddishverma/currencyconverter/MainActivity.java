@@ -1,6 +1,7 @@
 package com.example.uddishverma.currencyconverter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -11,14 +12,17 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,6 +31,7 @@ import android.widget.TextView;
 
 import com.example.uddishverma.currencyconverter.rest.Data;
 import com.example.uddishverma.currencyconverter.utils.Globals;
+import com.example.uddishverma.currencyconverter.utils.Prefs;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -38,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static TextView date, currencyTitle, countryTo, countryFrom;
     public static int flag;
-    EditText currency_from,currency_to;
+    public static EditText currency_from;
+    public static TextView currency_to;
     Typeface tfRegular, tfThin;
     ImageView arrowDown, arrowUp;
     public static BottomSheetBehavior behavior;
@@ -49,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout relativeOne, relativeTwo;
     Calendar calendar;
     int screenHeight = 0;
-    EditText search;
+    public static EditText search;
+    CardView interchange;
 
     public static final String TAG = "MainActivity";
 
@@ -59,9 +66,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Hiding the status bar
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         initialize();
+
+        try {
+            if(!(Prefs.getPrefs("country_from",MainActivity.this).equals("notfound"))){
+                countryFrom.setText(Prefs.getPrefs("country_from",MainActivity.this));
+            }else {
+                countryFrom.setText("USD");
+            }
+
+            if(!(Prefs.getPrefs("country_to",MainActivity.this).equals("notfound"))){
+                countryTo.setText(Prefs.getPrefs("country_to",MainActivity.this));
+            }else {
+                countryTo.setText("INR");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         screenHeight = getScreenHeight();
 
@@ -71,32 +94,39 @@ public class MainActivity extends AppCompatActivity {
 
         //inflating bottom sheet
         final LinearLayout bottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
-        bottomSheet.getLayoutParams().height=getScreenHeight()-100;
+        bottomSheet.getLayoutParams().height = getScreenHeight() - 100;
         behavior = BottomSheetBehavior.from(bottomSheet);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //TODO fill the list
-        mAdapter = new CurrencyAdapter(MainActivity.this,Globals.NEWcountryCode,Globals.NEWcountriesCurrencies);
+        mAdapter = new CurrencyAdapter(MainActivity.this, Globals.NEWcountryCode, Globals.NEWcountriesCurrencies);
         recyclerView.setAdapter(mAdapter);
 
         behavior.setPeekHeight(0);
+
+
 
         //Setting click listeners on arrows
         linearLayoutOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flag=1;
+                flag = 1;
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+                InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(linearLayoutOne.getWindowToken(), 0);
 //                behavior.setPeekHeight(screenHeight/2);
             }
         });
         linearLayoutTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                flag=2;
+                flag = 2;
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(linearLayoutTwo.getWindowToken(), 0);
             }
         });
 
@@ -115,6 +145,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        interchange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tempFrom = String.valueOf(countryFrom.getText());
+                countryFrom.setText(countryTo.getText());
+                countryTo.setText(tempFrom);
+
+                tempFrom = String.valueOf(currency_from.getText());
+                currency_from.setText(currency_to.getText());
+                currency_to.setText(tempFrom);
+
+            }
+        });
+
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -123,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s!=null){
+                if (s != null) {
                     mAdapter.filter(s.toString());
                 }
             }
@@ -143,40 +187,24 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s!=null &&s.length()>1){
-                    String value=Globals.convertCurrency(countryFrom.getText().toString(), countryTo.getText().toString(), currency_from.getText().toString());
-                    currency_to.setText(value);
+                if (s != null && s.length() > 0) {
+                    String value = Globals.convertCurrency(countryFrom.getText().toString(), countryTo.getText().toString(), s.toString());
+                    currency_to.setText(value.toString());
+                }else {
+                    currency_to.setText("");
                 }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
-
-        currency_to.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String value=Globals.convertCurrency(countryTo.getText().toString(), countryFrom.getText().toString(), currency_to.getText().toString());
-                currency_from.setText(value);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
 
 //        String value = Globals.convertCurrency("USD", "INR", "2");
 //        Log.d("tagg", value);
     }
+
 
     private int getScreenHeight() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -198,10 +226,12 @@ public class MainActivity extends AppCompatActivity {
         countryTo = (TextView) findViewById(R.id.country_to);
         countryFrom = (TextView) findViewById(R.id.country_from);
 
-        currency_from=(EditText)findViewById(R.id.currency_from);
-        currency_to=(EditText)findViewById(R.id.currency_to);
+        interchange = (CardView) findViewById(R.id.interchange);
 
-        search=(EditText)findViewById(R.id.search);
+        currency_from = (EditText) findViewById(R.id.currency_from_et);
+        currency_to = (TextView) findViewById(R.id.currency_to_et);
+
+        search = (EditText) findViewById(R.id.search);
 
         date.setText(getCurrentMonth().substring(0, 3) + " " + getCurrentDate() + "," + getCurrentYear());
 
@@ -217,6 +247,10 @@ public class MainActivity extends AppCompatActivity {
         currencyTitle.setTypeface(tfRegular);
         countryTo.setTypeface(tfThin);
         countryFrom.setTypeface(tfThin);
+
+        hideKeyboard(findViewById(R.id.relative_1));
+        hideKeyboard(findViewById(R.id.relative_2));
+        hideKeyboard(findViewById(R.id.interchange));
 
         ColorStateList csl = AppCompatResources.getColorStateList(this, R.color.peach);
         Drawable drawableone = getResources().getDrawable(R.drawable.ic_keyboard_arrow_down);
@@ -286,5 +320,22 @@ public class MainActivity extends AppCompatActivity {
         String strDate = mdformat.format(calendar.getTime());
         String year = strDate.substring(0, 4);
         return year;
+    }
+
+    private void hideKeyboard(View root) {
+        root.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    View view = v.getRootView().findFocus();
+                    if (view != null) {
+                        InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+                    return false;
+                }
+                return false;
+            }
+        });
     }
 }

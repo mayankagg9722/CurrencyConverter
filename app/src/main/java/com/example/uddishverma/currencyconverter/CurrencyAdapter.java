@@ -7,10 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.uddishverma.currencyconverter.utils.Globals;
+import com.example.uddishverma.currencyconverter.utils.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,16 +86,35 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.ViewHo
         holder.linear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int p=0;
                 if(MainActivity.flag==1){
-                    MainActivity.countryFrom.setText(holder.currency.getText().toString());
+                    if(holder.currency.getText().toString().toLowerCase().equals(MainActivity.countryTo.getText().toString().toLowerCase())){
+                        p=1;
+                    }else {
+                        MainActivity.countryFrom.setText(holder.currency.getText().toString());
+                    }
                 }else if(MainActivity.flag==2){
-                    MainActivity.countryTo.setText(holder.currency.getText().toString());
+                    if(holder.currency.getText().toString().toLowerCase().equals(MainActivity.countryFrom.getText().toString().toLowerCase())){
+                        p=1;
+                    }else {
+                        MainActivity.countryTo.setText(holder.currency.getText().toString());
+                    }
                 }
-                MainActivity.behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                MainActivity.behavior.setPeekHeight(0);
+                if(p==0){
+                    MainActivity.behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    MainActivity.behavior.setPeekHeight(0);
+                    MainActivity.currency_to.setText("");
+                    MainActivity.currency_from.setText("");
+                    MainActivity.search.setText("");
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(holder.linear.getWindowToken(), 0);
+                    Prefs.setPrefs("country_from",MainActivity.countryFrom.getText().toString(),context);
+                    Prefs.setPrefs("country_to",MainActivity.countryTo.getText().toString(),context);
+                }else {
+                    Toast.makeText(context,"Select same currencies on both sides",Toast.LENGTH_LONG).show();
+                }
             }
         });
-
     }
 
     @Override
