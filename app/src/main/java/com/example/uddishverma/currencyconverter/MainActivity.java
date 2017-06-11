@@ -32,6 +32,7 @@ import android.widget.TextView;
 import com.example.uddishverma.currencyconverter.rest.Data;
 import com.example.uddishverma.currencyconverter.utils.Globals;
 import com.example.uddishverma.currencyconverter.utils.Prefs;
+import com.example.uddishverma.currencyconverter.utils.RelativeLayoutTouchListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,17 +47,19 @@ public class MainActivity extends AppCompatActivity {
     public static EditText currency_from;
     public static TextView currency_to;
     Typeface tfRegular, tfThin;
-    ImageView arrowDown, arrowUp;
+    public static ImageView arrowDown, arrowUp;
     public static BottomSheetBehavior behavior;
     RecyclerView recyclerView;
     CurrencyAdapter mAdapter;
     ArrayList items = new ArrayList();
     LinearLayout linearLayoutOne, linearLayoutTwo, mainLayout;
-    RelativeLayout relativeOne, relativeTwo;
+    public static RelativeLayout relativeOne, relativeTwo;
     Calendar calendar;
     int screenHeight = 0;
     public static EditText search;
     CardView interchange;
+    public static Context ctx;
+    public static View line;
 
     public static final String TAG = "MainActivity";
 
@@ -69,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         initialize();
+
+        ctx = getApplicationContext();
 
         try {
             if(!(Prefs.getPrefs("country_from",MainActivity.this).equals("notfound"))){
@@ -159,6 +164,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        relativeOne.setOnTouchListener(new RelativeLayoutTouchListener(this));
+
         search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -200,9 +207,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        relativeOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) MainActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(relativeOne.getWindowToken(), 0);
+            }
+        });
 
-//        String value = Globals.convertCurrency("USD", "INR", "2");
-//        Log.d("tagg", value);
+
     }
 
 
@@ -231,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
         currency_from = (EditText) findViewById(R.id.currency_from_et);
         currency_to = (TextView) findViewById(R.id.currency_to_et);
 
+        line = findViewById(R.id.txt_line);
+
         search = (EditText) findViewById(R.id.search);
 
         date.setText(getCurrentMonth().substring(0, 3) + " " + getCurrentDate() + "," + getCurrentYear());
@@ -252,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
         hideKeyboard(findViewById(R.id.relative_2));
         hideKeyboard(findViewById(R.id.interchange));
 
-        ColorStateList csl = AppCompatResources.getColorStateList(this, R.color.peach);
+        ColorStateList csl = AppCompatResources.getColorStateList(this, R.color.blue);
         Drawable drawableone = getResources().getDrawable(R.drawable.ic_keyboard_arrow_down);
         DrawableCompat.setTintList(drawableone, csl);
         arrowDown.setImageDrawable(drawableone);

@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:background="@drawable/gradient_red"
+                android:background="@drawable/gradient_blue"
                 android:elevation="2dp">
 
                 <TextView
@@ -162,9 +162,10 @@
                             android:textSize="45dp" />
 
                         <View
+                            android:id="@+id/txt_line"
                             android:layout_width="180dp"
                             android:layout_height="2dp"
-                            android:background="@color/peach" />
+                            android:background="@color/blue" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -187,7 +188,7 @@
                             android:layout_marginLeft="5dp"
                             android:text="INR"
                             android:textAppearance="?android:textAppearanceLarge"
-                            android:textColor="#FA898A" />
+                            android:textColor="@color/blue" />
                     </LinearLayout>
 
                 </LinearLayout>
