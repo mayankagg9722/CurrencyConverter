@@ -1,6 +1,10 @@
 package com.example.uddishverma.currencyconverter.rest;
 
 
+import com.google.gson.JsonObject;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
 
 /**
  * Created by mayankaggarwal on 12/02/17.
@@ -8,10 +12,7 @@ package com.example.uddishverma.currencyconverter.rest;
 
 public interface ApiInterface {
 
-//    @POST("bootup")
-//    Call<BootupResponse> bootup(@Body BootupRequest bootupRequest);
-
-//    @GET("faculties.json")
-//    Call<FacultiesData> getFaculties();
+    @GET("currencymobile")
+    Call<JsonObject> getCurrencyMobile();
 
 }
