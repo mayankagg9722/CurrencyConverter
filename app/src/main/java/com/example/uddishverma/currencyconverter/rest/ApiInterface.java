@@ -12,7 +12,7 @@ import retrofit2.http.GET;
 
 public interface ApiInterface {
 
-    @GET("currencymobile.json")
+    @GET("currencymobile")
     Call<JsonObject> getCurrencyMobile();
 
 }
