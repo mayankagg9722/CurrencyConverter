@@ -1,17 +1,23 @@
 package com.example.uddishverma.currencyconverter;
 
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.content.res.AppCompatResources;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView date, currencyTitle;
-    Typeface tf;
+    TextView date, currencyTitle, countryTo, countryFrom;
+    Typeface tfRegular, tfThin;
+    ImageView arrowDown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +31,21 @@ public class MainActivity extends AppCompatActivity {
 
         date = (TextView) findViewById(R.id.date);
         currencyTitle = (TextView) findViewById(R.id.currency_title);
+        arrowDown = (ImageView) findViewById(R.id.down_arrow);
+        countryTo = (TextView) findViewById(R.id.country_to);
+        countryFrom = (TextView) findViewById(R.id.country_from);
 
-        tf = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/OpenSans-Regular.ttf");
-        date.setTypeface(tf);
-        currencyTitle.setTypeface(tf);
+        tfRegular = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/OpenSans-Regular.ttf");
+        tfRegular = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Raleway-ExtraLight.ttf");
+        date.setTypeface(tfRegular);
+        currencyTitle.setTypeface(tfRegular);
+        countryTo.setTypeface(tfThin);
+        countryFrom.setTypeface(tfThin);
+
+        ColorStateList csl = AppCompatResources.getColorStateList(this, R.color.peach);
+        Drawable drawableone = getResources().getDrawable(R.drawable.ic_keyboard_arrow_down);
+        DrawableCompat.setTintList(drawableone, csl);
+        arrowDown.setImageDrawable(drawableone);
 
     }
 

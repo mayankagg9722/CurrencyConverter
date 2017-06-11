@@ -34,12 +34,16 @@
             android:textColor="#fff"
             android:textSize="35dp" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/currency_title"
+            android:layout_centerHorizontal="true">
         <EditText
             android:id="@+id/currency_et"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/currency_title"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:backgroundTint="@android:color/white"
             android:padding="20dp"
@@ -47,19 +51,36 @@
             android:textColor="#FFF"
             android:textColorHighlight="#fff"
             android:textColorHint="#fff"
+            android:inputType="number"
+            android:maxLines="1"
             android:textSize="45dp" />
 
         <ImageView
+            android:id="@+id/up_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/currency_title"
             android:layout_toRightOf="@id/currency_et"
             android:src="@drawable/ic_keyboard_arrow_down" />
 
+        <TextView
+            android:layout_below="@id/currency_title"
+            android:layout_toRightOf="@id/up_arrow"
+            android:id="@+id/country_from"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="USD"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="#fff"
+            android:layout_gravity="start"/>
+
+        </LinearLayout>
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:background="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -67,7 +88,8 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:orientation="horizontal">
 
             <EditText
@@ -80,14 +102,18 @@
                 android:textColor="#FA898A"
                 android:textColorHighlight="#FA898A"
                 android:textColorHint="#FA898A"
+                android:inputType="number"
+                android:maxLines="1"
                 android:textSize="50dp" />
 
             <ImageView
+                android:id="@+id/down_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/arrow_red" />
+                android:src="@drawable/ic_keyboard_arrow_down" />
 
             <TextView
+                android:id="@+id/country_to"
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
