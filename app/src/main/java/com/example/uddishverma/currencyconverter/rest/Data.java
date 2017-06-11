@@ -21,7 +21,6 @@ public class Data {
         getCurrency.execute(activity);
     }
 
-
     public static class GetCurrency extends AsyncTask<Activity, Void, Integer> {
 
         UpdateCallback updateCallback;
@@ -42,7 +41,7 @@ public class Data {
             try {
                 JsonObject currencyResponse = bootupRes.execute().body();
                 if (currencyResponse.get("status").getAsBoolean()) {
-                    Prefs.setPrefs("currencyJson  ",currencyResponse.toString(),activity);
+                    Prefs.setPrefs("currencyJson", currencyResponse.toString(), activity);
                     error = 0;
                 } else {
                     Globals.errorRes = "Error in fetching";
@@ -66,8 +65,9 @@ public class Data {
         }
     }
 
-    public interface UpdateCallback{
+    public interface UpdateCallback {
         void onUpdate();
+
         void onFailure();
     }
 

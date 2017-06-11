@@ -22,32 +22,32 @@ public class ApiClient {
 
     public static Retrofit getClient(final Context context) {
 
-        String url="https://currencybackend.herokuapp.com";
+        String url = "https://currencybackend.herokuapp.com";
 
-            OkHttpClient ok = new OkHttpClient.Builder()
-                    .addInterceptor(new Interceptor() {
-                        @Override
-                        public Response intercept(Chain chain) throws IOException {
-                            Request request = chain.request().newBuilder()
-                                    .build();
-                            return chain.proceed(request);
-                        }
-                    })
-                    .build();
+        OkHttpClient ok = new OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @Override
+                    public Response intercept(Chain chain) throws IOException {
+                        Request request = chain.request().newBuilder()
+                                .build();
+                        return chain.proceed(request);
+                    }
+                })
+                .build();
 
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(url)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .client(ok.newBuilder().connectTimeout(20, TimeUnit.SECONDS).readTimeout(20, TimeUnit.SECONDS)
-                            .writeTimeout(20, TimeUnit.SECONDS).build())
-                    .build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl(url)
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(ok.newBuilder().connectTimeout(20, TimeUnit.SECONDS).readTimeout(20, TimeUnit.SECONDS)
+                        .writeTimeout(20, TimeUnit.SECONDS).build())
+                .build();
 
         return retrofit;
     }
 
     public static Retrofit getClient() {
 
-        String url="https://currencybackend.herokuapp.com";
+        String url = "https://currencybackend.herokuapp.com";
 
         OkHttpClient ok = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
