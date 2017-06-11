@@ -1,18 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.uddishverma.currencyconverter.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@drawable/gradient_red"
+        android:elevation="2dp">
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="7dp"
+            android:text="JUN 11, 2017"
+            android:textColor="#fff" />
+
+        <TextView
+            android:id="@+id/currency_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Currency"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="#fff"
+            android:textSize="35dp" />
+
+        <EditText
+            android:id="@+id/currency_et"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/currency_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@android:color/white"
+            android:padding="20dp"
+            android:shadowColor="#fff"
+            android:textColor="#FFF"
+            android:textColorHighlight="#fff"
+            android:textColorHint="#fff"
+            android:textSize="45dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/currency_title"
+            android:layout_toRightOf="@id/currency_et"
+            android:src="@drawable/ic_keyboard_arrow_down" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="#FA898A"
+                android:padding="20dp"
+                android:shadowColor="#FA898A"
+                android:textColor="#FA898A"
+                android:textColorHighlight="#FA898A"
+                android:textColorHint="#FA898A"
+                android:textSize="50dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_red" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="INR"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textColor="#FA898A"
+                android:layout_gravity="start"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/bottom_sheet_behavior"
+        android:elevation="4dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:text="Select the Country"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="#FA898A"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#000"/>
+
+        </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>
