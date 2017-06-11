@@ -22,13 +22,9 @@ public class ApiClient {
 
     public static Retrofit getClient(final Context context) {
 
-//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        String url="http://54.190.52.112";
+        String url="https://currencybackend.herokuapp.com";
 
             OkHttpClient ok = new OkHttpClient.Builder()
-//                    .addInterceptor(interceptor)
                     .addInterceptor(new Interceptor() {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
@@ -51,7 +47,7 @@ public class ApiClient {
 
     public static Retrofit getClient() {
 
-        String url="http://54.190.52.112";
+        String url="https://currencybackend.herokuapp.com";
 
         OkHttpClient ok = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {
