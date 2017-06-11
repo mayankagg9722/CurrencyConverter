@@ -1,21 +1,25 @@
 package com.example.uddishverma.currencyconverter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,29 +27,29 @@ import android.widget.TextView;
 
 import com.example.uddishverma.currencyconverter.rest.Data;
 import com.example.uddishverma.currencyconverter.utils.Globals;
-import com.example.uddishverma.currencyconverter.utils.Prefs;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView date, currencyTitle, countryTo, countryFrom;
+    public static TextView date, currencyTitle, countryTo, countryFrom;
+    public static int flag;
+    EditText currency_from,currency_to;
     Typeface tfRegular, tfThin;
     ImageView arrowDown, arrowUp;
-    BottomSheetBehavior behavior;
+    public static BottomSheetBehavior behavior;
     RecyclerView recyclerView;
     CurrencyAdapter mAdapter;
     ArrayList items = new ArrayList();
-    LinearLayout linearLayoutOne, linearLayoutTwo;
+    LinearLayout linearLayoutOne, linearLayoutTwo, mainLayout;
     RelativeLayout relativeOne, relativeTwo;
     Calendar calendar;
+    int screenHeight = 0;
+    EditText search;
 
     public static final String TAG = "MainActivity";
 
@@ -54,78 +58,136 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        View decorView = getWindow().getDecorView();
         //Hiding the status bar
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         initialize();
 
+        screenHeight = getScreenHeight();
+
         currencyApi(MainActivity.this);
 
-        initialApiSave();
+        Globals.getCountryCode(MainActivity.this);
 
         //inflating bottom sheet
-        NestedScrollView bottomSheet = (NestedScrollView) findViewById(R.id.bottom_sheet);
+        final LinearLayout bottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
+        bottomSheet.getLayoutParams().height=getScreenHeight()-100;
         behavior = BottomSheetBehavior.from(bottomSheet);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //TODO fill the list
-        mAdapter = new CurrencyAdapter(items);
+        mAdapter = new CurrencyAdapter(MainActivity.this,Globals.countryCode,Globals.countriesCurrencies);
         recyclerView.setAdapter(mAdapter);
+
+        behavior.setPeekHeight(0);
 
         //Setting click listeners on arrows
         linearLayoutOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                flag=1;
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//                behavior.setPeekHeight(screenHeight/2);
             }
         });
         linearLayoutTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                flag=2;
                 behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
             }
         });
-        behavior.setPeekHeight(0);
 
         relativeOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                behavior.setPeekHeight(0);
             }
         });
         relativeTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                behavior.setPeekHeight(0);
             }
         });
 
-    }
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-    private void initialApiSave() {
-        try {
-            JsonParser parser = new JsonParser();
-            JsonObject currencyObject;
-            if ((Prefs.getPrefs("currencyJson", MainActivity.this).equals("notfound"))) {
-                currencyObject = parser.parse(Globals.initalCurrnecyJson).getAsJsonObject();
-            } else {
-                currencyObject = parser.parse(Prefs.getPrefs("currencyJson", MainActivity.this)).getAsJsonObject();
             }
-            JsonObject allThingsObject = parser.parse(Globals.allThingsJson()).getAsJsonObject();
 
-            Log.d("tagg", currencyObject.get("status").getAsString());
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s!=null){
+                    mAdapter.filter(s.toString());
+                }
+            }
 
-            Log.d("tagg", currencyObject.get("currency").getAsJsonObject().get("quotes").getAsJsonObject().get("USDINR").getAsString());
-            Log.d("tagg", allThingsObject.get("results").getAsJsonObject().toString());
+            @Override
+            public void afterTextChanged(Editable s) {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            }
+        });
+
+
+        currency_from.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s!=null &&s.length()>1){
+//                    String value=Globals.convertCurrency(countryFrom.getText().toString(), countryTo.getText().toString(), currency_from.getText().toString());
+//                    currency_to.setText(value);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+        currency_to.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                String value=Globals.convertCurrency(countryTo.getText().toString(), countryFrom.getText().toString(), currency_to.getText().toString());
+//                currency_from.setText(value);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+//        String value = Globals.convertCurrency("USD", "INR", "2");
+//        Log.d("tagg", value);
     }
+
+    private int getScreenHeight() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        Log.d(TAG, "getScreenHeight: " + height);
+        return height;
+    }
+
 
     private void initialize() {
 
@@ -136,12 +198,18 @@ public class MainActivity extends AppCompatActivity {
         countryTo = (TextView) findViewById(R.id.country_to);
         countryFrom = (TextView) findViewById(R.id.country_from);
 
-        date.setText(getCurrentMonth().substring(0,3) + " " + getCurrentDate() + "," + getCurrentYear());
+        currency_from=(EditText)findViewById(R.id.currency_from);
+        currency_to=(EditText)findViewById(R.id.currency_to);
+
+        search=(EditText)findViewById(R.id.search);
+
+        date.setText(getCurrentMonth().substring(0, 3) + " " + getCurrentDate() + "," + getCurrentYear());
 
         relativeOne = (RelativeLayout) findViewById(R.id.relative_1);
         relativeTwo = (RelativeLayout) findViewById(R.id.relative_2);
         linearLayoutOne = (LinearLayout) findViewById(R.id.linearll_1);
         linearLayoutTwo = (LinearLayout) findViewById(R.id.linearll_2);
+        mainLayout = (LinearLayout) findViewById(R.id.maine_linear_layout);
 
         tfRegular = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/OpenSans-Regular.ttf");
         tfRegular = Typeface.createFromAsset(getApplicationContext().getAssets(), "fonts/Raleway-ExtraLight.ttf");
