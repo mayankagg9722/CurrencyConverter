@@ -1,4 +1,4 @@
-package com.example.uddishverma.currencyconverter;
+package com.mayank.uddishverma.currencyconverter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,10 +28,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.uddishverma.currencyconverter.rest.Data;
-import com.example.uddishverma.currencyconverter.utils.Globals;
-import com.example.uddishverma.currencyconverter.utils.Prefs;
-import com.example.uddishverma.currencyconverter.utils.RelativeLayoutTouchListener;
+import com.mayank.uddishverma.currencyconverter.rest.Data;
+import com.mayank.uddishverma.currencyconverter.utils.Globals;
+import com.mayank.uddishverma.currencyconverter.utils.Prefs;
+import com.mayank.uddishverma.currencyconverter.utils.RelativeLayoutTouchListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

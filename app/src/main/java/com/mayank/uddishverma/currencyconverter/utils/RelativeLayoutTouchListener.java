@@ -1,4 +1,4 @@
-package com.example.uddishverma.currencyconverter.utils;
+package com.mayank.uddishverma.currencyconverter.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,10 +11,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
-import com.example.uddishverma.currencyconverter.MainActivity;
-import com.example.uddishverma.currencyconverter.R;
+import com.mayank.uddishverma.currencyconverter.MainActivity;
+import com.mayank.uddishverma.currencyconverter.R;
 
 /**
  * Created by uddishverma on 12/06/17.

@@ -1,9 +1,8 @@
-package com.example.uddishverma.currencyconverter;
+package com.mayank.uddishverma.currencyconverter;
 
 import android.content.Context;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.uddishverma.currencyconverter.utils.Globals;
-import com.example.uddishverma.currencyconverter.utils.Prefs;
+import com.mayank.uddishverma.currencyconverter.utils.Globals;
+import com.mayank.uddishverma.currencyconverter.utils.Prefs;
 
 import java.util.ArrayList;
 import java.util.List;

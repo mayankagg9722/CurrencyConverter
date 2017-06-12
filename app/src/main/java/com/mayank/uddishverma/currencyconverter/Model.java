@@ -1,4 +1,4 @@
-package com.example.uddishverma.currencyconverter;
+package com.mayank.uddishverma.currencyconverter;
 
 /**
  * Created by uddishverma on 11/06/17.

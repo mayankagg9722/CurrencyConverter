@@ -1,4 +1,4 @@
-package com.example.uddishverma.currencyconverter.rest;
+package com.mayank.uddishverma.currencyconverter.rest;
 
 import android.content.Context;
 

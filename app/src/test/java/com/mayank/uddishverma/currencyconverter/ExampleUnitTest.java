@@ -1,4 +1,4 @@
-package com.example.uddishverma.currencyconverter;
+package com.mayank.uddishverma.currencyconverter;
 
 import org.junit.Test;
 
