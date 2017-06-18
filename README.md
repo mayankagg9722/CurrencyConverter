@@ -2,7 +2,7 @@
 
  [Link to Google Play Store!](https://play.google.com/store/apps/details?id=com.mayank.uddishverma.currencyconverter)
 
-![pageres](minimal.png "Main")
+![pageres](https://github.com/mayankagg9722/CurrencyConverter/blob/master/minimal%20.png "Main")
 
 
 # Features: 
