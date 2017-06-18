@@ -2,7 +2,7 @@
 
  [Link to Google Play Store!](https://play.google.com/store/apps/details?id=com.mayank.uddishverma.currencyconverter)
 
-![pageres](screenshots/minimal.png "Main")
+![pageres](/minimal.png "Main")
 
 
 # Features: 
