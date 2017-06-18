@@ -6,6 +6,12 @@
 
 ![pageres](https://github.com/mayankagg9722/CurrencyConverter/blob/master/one.png "Main")
 
+![pageres](https://github.com/mayankagg9722/CurrencyConverter/blob/master/two.png "Main")
+
+![pageres](https://github.com/mayankagg9722/CurrencyConverter/blob/master/three.png "Main")
+
+
+
 
 
 # Features: 
