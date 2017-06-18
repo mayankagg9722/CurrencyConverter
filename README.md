@@ -4,6 +4,9 @@
 
 ![pageres](https://github.com/mayankagg9722/CurrencyConverter/blob/master/minimal%20.png "Main")
 
+![pageres](https://github.com/mayankagg9722/CurrencyConverter/blob/master/one.png "Main")
+
+
 
 # Features: 
 * 🔵 Instant currency conversion just by typing
