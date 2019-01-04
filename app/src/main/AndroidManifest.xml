@@ -24,11 +24,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="09f4bc76fce1411ee8bd636e348ddfa010ed03df"
-            />
-
     </application>
 
 </manifest>
